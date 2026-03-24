@@ -1,4 +1,4 @@
-class Solution {
+class LC_2220 {
     public int minBitFlips(int start, int goal) {
         int xor=start^goal;
         int count=0;

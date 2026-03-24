@@ -1,4 +1,4 @@
-class Solution {
+class LC_557 {
     public String reverseWords(String s) {
         String[] words = s.split(" ");
         StringBuilder ans = new StringBuilder();

@@ -54,5 +54,5 @@ public class ShoppingCart {
             totalCartPrice += product.getTotalPrice();
         }
         System.out.println("Total Cart Price: $" + totalCartPrice);
-    }
+        scanner.close();   }
 }

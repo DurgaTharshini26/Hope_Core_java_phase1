@@ -1,4 +1,4 @@
-class Solution {
+class LC_1217 {
     public int minCostToMoveChips(int[] position) {
         int odd=0;
         int even=0;

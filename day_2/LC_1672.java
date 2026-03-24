@@ -1,4 +1,4 @@
-class Solution {
+class LC_1672 {
     public int maximumWealth(int[][] accounts) {
         int max=0;
         

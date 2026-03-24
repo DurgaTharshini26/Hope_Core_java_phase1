@@ -1,4 +1,4 @@
-class Solution {
+class LC_33 {
     public int search(int[] arr, int target) {
         int n = arr.length;
         int low = 0 , high = n-1;

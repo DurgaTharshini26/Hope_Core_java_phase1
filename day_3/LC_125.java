@@ -1,4 +1,4 @@
-class Solution {
+class LC_125 {
     public boolean isPalindrome(String s) {
         s=s.toLowerCase();
         s=s.replaceAll("[^A-Za-z0-9]","");

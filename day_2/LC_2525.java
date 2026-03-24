@@ -1,4 +1,4 @@
-class Solution {
+class LC_2525 {
     public String categorizeBox(int length, int width, int height, int mass) {
         long vol=(length*width*height);
         boolean b=false;

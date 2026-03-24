@@ -1,4 +1,4 @@
-class Solution {
+class LC_1822 {
     public int arraySign(int[] nums) {
         int sign=1;
         for(int i=0;i<nums.length;i++)

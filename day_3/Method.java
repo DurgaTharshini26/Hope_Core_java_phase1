@@ -7,6 +7,7 @@ public class Method {
          int a=sc.nextInt();
          Method n=new Method();
          n.print(a);
+         sc.close();
     }
     public void print (int n)
     {
@@ -20,5 +21,6 @@ public class Method {
     {
         return a*b;
     }
+    
 
 }
