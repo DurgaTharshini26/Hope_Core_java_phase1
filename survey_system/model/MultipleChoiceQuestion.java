@@ -3,43 +3,36 @@ package survey_system.model;
 import java.util.ArrayList;
 
 // INHERITANCE: MultipleChoiceQuestion extends Question
+import survey_system.Exception.ValidationException;
 public class MultipleChoiceQuestion extends Question {
 
-    // ENCAPSULATION: private list of options
     private ArrayList<String> options;
-
     public MultipleChoiceQuestion(String questionId, String questionText,
                                   boolean isRequired, ArrayList<String> options) {
         super(questionId, questionText, isRequired);
         this.options = options;
     }
 
-    // POLYMORPHISM: validates that the answer matches one of the given options
     @Override
-    public boolean validateAnswer(String answer) {
+    public boolean validateAnswer(String answer) throws ValidationException {
         if (answer == null || answer.trim().isEmpty()) {
             if (isRequired()) {
-                System.out.println("  ERROR: This question is required!");
-                return false;
+                throw new ValidationException(getQuestionId(),
+                        "This question is required!");
             }
             return true;
         }
-
-        // Check if the answer matches any option (ignore uppercase/lowercase)
         for (String option : options) {
             if (option.equalsIgnoreCase(answer.trim())) {
-                return true; // found a match!
+                return true;
             }
         }
-
-        System.out.println("  ERROR: Please choose one of the given options.");
-        return false;
+        throw new ValidationException(getQuestionId(),
+                "Please choose one of the given options.");
     }
 
     @Override
-    public String getType() {
-        return "MULTIPLE CHOICE";
-    }
+    public String getType() { return "MULTIPLE CHOICE"; }
 
     @Override
     public void display() {
@@ -50,7 +43,5 @@ public class MultipleChoiceQuestion extends Question {
         }
     }
 
-    public ArrayList<String> getOptions() {
-        return options;
-    }
+    public ArrayList<String> getOptions() { return options; }
 }

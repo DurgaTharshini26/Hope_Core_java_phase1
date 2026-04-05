@@ -1,55 +1,45 @@
 package survey_system.model;
 
-
+import survey_system.Exception.ValidationException;
 // INHERITANCE: TextQuestion extends Question (gets all Question fields + methods)
 public class Textquestion extends Question {
 
-    private int minLength; // minimum characters required
-    private int maxLength; // maximum characters allowed
+    private int minLength;
+    private int maxLength;
 
-    // Constructor calls super() to set up parent class fields
-    public Textquestion(String questionId, String questionText, boolean isRequired,
-                        int minLength, int maxLength) {
-        super(questionId, questionText, isRequired); // calls Question constructor
+    public Textquestion(String questionId, String questionText,
+                        boolean isRequired, int minLength, int maxLength) {
+        super(questionId, questionText, isRequired);
         this.minLength = minLength;
         this.maxLength = maxLength;
     }
 
-    // POLYMORPHISM: our own version of validateAnswer
-    // checks if answer length is within the allowed range
     @Override
-    public boolean validateAnswer(String answer) {
+    public boolean validateAnswer(String answer) throws ValidationException {
         if (answer == null || answer.trim().isEmpty()) {
             if (isRequired()) {
-                System.out.println("  ERROR: This question is required!");
-                return false;
+                throw new ValidationException(getQuestionId(),
+                        "This question is required!");
             }
-            return true; // empty answer is ok if not required
+            return true;
         }
-
         if (answer.length() < minLength) {
-            System.out.println("  ERROR: Answer too short. Minimum " + minLength + " characters.");
-            return false;
+            throw new ValidationException(getQuestionId(),
+                    "Answer too short. Minimum " + minLength + " characters.");
         }
-
         if (answer.length() > maxLength) {
-            System.out.println("  ERROR: Answer too long. Maximum " + maxLength + " characters.");
-            return false;
+            throw new ValidationException(getQuestionId(),
+                    "Answer too long. Maximum " + maxLength + " characters.");
         }
-
-        return true; // valid!
+        return true;
     }
 
-    // POLYMORPHISM: our own version of getType
     @Override
-    public String getType() {
-        return "TEXT";
-    }
+    public String getType() { return "TEXT"; }
 
-    // Override display to show length hint
     @Override
     public void display() {
-        super.display(); // call parent display first
+        super.display();
         System.out.println("  (Enter between " + minLength + " and " + maxLength + " characters)");
     }
 }

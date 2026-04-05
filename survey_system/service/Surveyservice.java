@@ -1,9 +1,7 @@
 package survey_system.service;
 
-import survey_system.model.Question;
-import survey_system .model.Response;
-import survey_system.model.User;
-import survey_system.model.Survey;
+import survey_system.Exception.ValidationException;
+import survey_system.model.*;
 import java.util.ArrayList;
 public class Surveyservice {
 
@@ -19,7 +17,6 @@ public class Surveyservice {
 
     public void addSurvey(Survey survey) {
         allSurveys.add(survey);
-        //System.out.println("Survey registered: " + survey.getTitle());
     }
 
     public Survey findSurvey(String surveyId) {
@@ -28,15 +25,14 @@ public class Surveyservice {
                 return s;
             }
         }
-        System.out.println("Survey not found: " + surveyId);
+        System.out.println("  Survey not found: " + surveyId);
         return null;
     }
 
-    // Accepts a User object now instead of just a name string
     public boolean submitResponse(Survey survey, User user, ArrayList<String> answers) {
 
         if (!survey.isActive()) {
-            System.out.println("  BLOCKED: Survey '" + survey.getTitle() + "' is not active.");
+            System.out.println("  BLOCKED: Survey is not active.");
             return false;
         }
 
@@ -47,30 +43,28 @@ public class Surveyservice {
             return false;
         }
 
-        System.out.println("  Validating answers...");
+        System.out.println("\n  Validating answers for: " + user.getName());
         boolean allValid = true;
 
         for (int i = 0; i < questions.size(); i++) {
-            String answer     = answers.get(i);
+            String   answer   = answers.get(i);
             Question question = questions.get(i);
 
             System.out.print("  Q" + (i + 1) + " [" + question.getType() + "] --> ");
 
-            // POLYMORPHISM: automatically calls the right validateAnswer()
-            // TextQuestion, RatingQuestion, or MultipleChoiceQuestion version
-            boolean valid = question.validateAnswer(answer);
+            try {
+                question.validateAnswer(answer);
+                System.out.println("  Answer: '" + answer + "' ... OK");
 
-            if (valid) {
-                System.out.println("  Answer '" + answer + "' ... OK");
-            }
-
-            if (!valid) {
+            } catch (ValidationException e) {
+                System.out.println("  ERROR on " + e.getQuestionId()
+                        + ": " + e.getMessage());
                 allValid = false;
             }
         }
 
         if (!allValid) {
-            System.out.println("  RESULT: Submission REJECTED.");
+            System.out.println("\n  RESULT: Submission REJECTED. Please fix the errors.");
             return false;
         }
 
@@ -80,7 +74,7 @@ public class Surveyservice {
             response.addAnswer(answer);
         }
         allResponses.add(response);
-        System.out.println("  RESULT: Submission ACCEPTED  (ID: " + responseId + ")");
+        System.out.println("\n  RESULT: Submission ACCEPTED! (Response ID: " + responseId + ")");
         return true;
     }
 
@@ -98,11 +92,11 @@ public class Surveyservice {
     }
 
     public void listSurveys() {
-        System.out.println("  All surveys in the system:");
+        System.out.println("\n  All surveys in the system:");
         for (Survey s : allSurveys) {
             System.out.println("  [" + s.getSurveyId() + "] "
                     + s.getTitle()
-                    + "  |  Status: " + (s.isActive() ? "ACTIVE" : "CLOSED")
+                    + "  |  Status: "    + (s.isActive() ? "ACTIVE" : "CLOSED")
                     + "  |  Questions: " + s.getQuestions().size());
         }
     }
