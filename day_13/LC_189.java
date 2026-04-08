@@ -1,5 +1,4 @@
 package day_13;
-
 public class LC_189 { 
     public void rotate(int[] nums, int k) {
         int n = nums.length;
@@ -23,4 +22,4 @@ public class LC_189 {
         }
     }
 }
-}
+
