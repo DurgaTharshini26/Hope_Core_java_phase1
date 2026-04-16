@@ -1,0 +1,23 @@
+package day_17;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+public class top {
+    public int[] topKFrequent(int[] nums, int k) {
+            Map<Integer,Integer> map=new HashMap<>();
+            for(int i:nums){
+                map.put(i,map.getOrDefault(i,0)+1);
+            }
+            List<Map.Entry<Integer,Integer>> list=new ArrayList<>(map.entrySet());
+            Collections.sort(list,(a,b)->b.getValue()-a.getValue());
+            int[] ans=new int[k];
+            for(int i=0;i<k;i++)
+            {
+                ans[i]=list.get(i).getKey();
+            }
+            return ans;
+    }
+}
+
