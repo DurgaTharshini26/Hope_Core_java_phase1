@@ -1,0 +1,35 @@
+package day_20;
+    class Bank{
+    int balance=1000;
+    synchronized void withdraw(int amount){
+        if(amount<=balance){
+            System.out.println("Amount withdraw successful");
+            balance-=amount;
+            System.out.println("Remaining Balance:"+balance);
+        }
+        else{
+            System.out.println("Insufficient balance");
+        }
+    }
+        
+}
+class BankThread extends Thread{
+    Bank bank;
+    BankThread(Bank bank) {
+        this.bank = bank;
+    }
+    public void run(){
+        bank.withdraw(800);
+    }
+}
+public class Synchronization {
+    public static void main(String[] args) {
+        Bank b=new Bank();
+        BankThread b1=new BankThread(b);
+        BankThread b2=new BankThread(b);
+        b1.start();
+        b2.start();
+
+    }
+}
+
